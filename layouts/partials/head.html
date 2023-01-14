@@ -60,7 +60,20 @@
   <link rel="apple-touch-icon" href="{{ `apple-touch-icon.png` | absURL }}" />
 
   <!-- Generator -->
-  {{ hugo.Generator }}
+
+  <!-- OpenGraph Meta Tags -->
+  {{ if .Params.og }}
+    {{ if .Params.og.names }}
+      {{ range $key, $value := .Params.og.names }}
+  <meta name="og:{{ $key }}" content="{{ $value }}">
+      {{ end }}
+    {{ end }}
+    {{ if .Params.og.properties }}
+      {{ range $key, $value := .Params.og.properties }}
+  <meta property="og:{{ $key }}" content="{{ $value }}">
+      {{ end }}
+    {{ end }}
+  {{ end }}
 
   <!-- RSS -->
   {{ range .AlternativeOutputFormats }}
