@@ -75,7 +75,32 @@
   {{- end -}}
   <!---->
 
-  <!-- favicon -->
+  {{ range $.Scratch.Get "social_list" }}
+  <link rel="preload" as="image" href="{{ printf `%s.svg` . | absURL }}" />
+  {{ end }}
+
+  <!-- Favicon -->
+  <link rel="icon" href="{{ `favicon.ico` | absURL }}" />
+  <link rel="apple-touch-icon" href="{{ `apple-touch-icon.png` | absURL }}" />
+
+  <!-- Generator -->
+
+  <!-- OpenGraph Meta Tags -->
+  {{ if .Params.og }}
+    {{ if .Params.og.names }}
+      {{ range $key, $value := .Params.og.names }}
+  <meta name="og:{{ $key }}" content="{{ $value }}">
+      {{ end }}
+    {{ end }}
+    {{ if .Params.og.properties }}
+      {{ range $key, $value := .Params.og.properties }}
+  <meta property="og:{{ $key }}" content="{{ $value }}">
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  <!-- RSS -->
+  {{ range .AlternativeOutputFormats }}
   <link
     rel="icon"
     href="{{- site.Params.favicon | default `favicon.ico` | relURL -}}"
@@ -116,4 +141,10 @@
   <link rel="canonical" href="{{- .Permalink -}}" />
   {{- end -}}
   <!---->
+  {{ template "_internal/schema.html" . }}
+  <!---->
+  {{ template "_internal/twitter_cards.html" . }}
+  <!---->
+  {{ partial "google/adsense" . }}
+  {{ end }}
 </head>
